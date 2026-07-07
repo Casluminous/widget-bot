@@ -1,0 +1,16 @@
+{
+  "name": "widget-bot",
+  "version": "1.0.0",
+  "description": "Discord bot hiển thị custom widget profile",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "deploy": "node deploy-commands.js"
+  },
+  "dependencies": {
+    "@xhayper/discord-rpc": "^1.3.4",
+    "discord.js": "^14.16.3",
+    "dotenv": "^17.4.2"
+  }
+}

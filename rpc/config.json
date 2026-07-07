@@ -1,0 +1,19 @@
+{
+  "clientId": "1523994279670972488",
+  "details": "𓏼 ‧₊ 　 ₊ 　 ᵔ   ‧₊ 　 ₊ 　 ᵔ",
+  "state": "Alternative",
+  "largeImageKey": "https://i.pinimg.com/236x/f2/32/58/f232584dc4196d5be73fdb68cdda2642.jpg",
+  "largeImageText": "Alter",
+  "smallImageKey": "https://i.pinimg.com/736x/5d/a8/e5/5da8e5685ea6a3f5082491bf4076f2ea.jpg",
+  "smallImageText": "Crayon Bbi",
+  "buttons": [
+    {
+      "label": "Spotify",
+      "url": "https://open.spotify.com/user/31tu5dmstqacwiIs66ydq2qimuiu"
+    },
+    {
+      "label": "Portfolio",
+      "url": "https://example.com"
+    }
+  ]
+}
