@@ -21,7 +21,7 @@ for (const file of commandFiles) {
 
 const rest = new REST({ version: "10" }).setToken(process.env.DISCORD_TOKEN);
 
-const GUILD_ID = "1515918003462607019";
+const GUILD_ID = "1340709545164410880";
 
 try {
     console.log(`🔄 Updating ${commands.length} commands to guild ${GUILD_ID}...`);

@@ -4,6 +4,7 @@ import { readdirSync } from "fs";
 import { fileURLToPath, pathToFileURL } from "url";
 import { dirname, join } from "path";
 import { initDB } from "./database.js";
+import { initGiveawayManager } from "./giveawayManager.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -28,8 +29,9 @@ for (const file of commandFiles) {
     }
 }
 
-// Init database
+// Init database & giveaway manager
 initDB();
+initGiveawayManager(client);
 
 // Handle interactions
 client.on(Events.InteractionCreate, async interaction => {
