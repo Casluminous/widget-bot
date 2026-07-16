@@ -59,19 +59,23 @@ function getRemaining(endTime) {
     return parts.join(" ");
 }
 
+function em(name) {
+    const e = client.emojis.cache.find(e => e.name === name);
+    return e ? e.toString() : `:${name}:`;
+}
+
 function buildEmbed(g) {
     return new EmbedBuilder()
-        .setTitle("🎉 GIVEAWAY 🎉")
-        .setDescription(`**${g.prize}**`)
+        .setTitle(`${em("FLY_blue_6")}   **GIVEAWAY**   ${em("FLY_blue_6")}   ${em("sheep_dinor21")}`)
+        .setDescription([
+            `${em("vos_sheep_dance")}\uFE52\uFE52  **${g.prize}** \uFE55${em("vos_sheep_dance")}`,
+            "",
+            `${em("Sheep_decor8")} T\u1ED5 ch\u1EE9c b\u1EDFi: <@${g.hostId}>`,
+            `${em("Sheep_decor8")} K\u1EBFt th\u00FAc: ${getRemaining(g.endTime)}`,
+            `${em("Sheep_decor8")} S\u1ED1 ng\u01B0\u1EDDi tham gia: ${g.entrants.length}`,
+        ].join("\n"))
         .setColor("#FFD700")
-        .addFields(
-            { name: "🏆 Giải thưởng", value: g.prize, inline: true },
-            { name: "👑 Người tổ chức", value: `<@${g.hostId}>`, inline: true },
-            { name: "👥 Số người thắng", value: `${g.winners}`, inline: true },
-            { name: "⏳ Còn lại", value: getRemaining(g.endTime), inline: true },
-            { name: "📊 Người tham gia", value: `${g.entrants.length}`, inline: true },
-        )
-        .setFooter({ text: "Nhấn 🎉 để tham gia!" })
+        .setFooter({ text: "\u{13083} th\u1EAFp nhang tr\u01B0\u1EDBc khi tham gia." })
         .setTimestamp(g.endTime);
 }
 
@@ -80,16 +84,16 @@ function buildEndedEmbed(g) {
         ? g.winnerIds.map(id => `<@${id}>`).join(", ")
         : "Không có người thắng";
     return new EmbedBuilder()
-        .setTitle("🎉 GIVEAWAY ĐÃ KẾT THÚC 🎉")
-        .setDescription(`**${g.prize}**`)
+        .setTitle(`${em("FLY_blue_6")}   **GIVEAWAY**   ${em("FLY_blue_6")}   ${em("sheep_dinor21")}`)
+        .setDescription([
+            `${em("vos_sheep_dance")}\uFE52\uFE52  **${g.prize}** \uFE55${em("vos_sheep_dance")}`,
+            "",
+            `${em("Sheep_decor8")} T\u1ED5 ch\u1EE9c b\u1EDFi: <@${g.hostId}>`,
+            `\u{1F3C5} Ng\u01B0\u1EDDi th\u1EAFng: ${winners}`,
+            `${em("Sheep_decor8")} T\u1ED5ng s\u1ED1 tham gia: ${g.entrants.length}`,
+        ].join("\n"))
         .setColor("#FF4444")
-        .addFields(
-            { name: "🏆 Giải thưởng", value: g.prize, inline: true },
-            { name: "👑 Người tổ chức", value: `<@${g.hostId}>`, inline: true },
-            { name: "🏅 Người thắng", value: winners, inline: false },
-            { name: "📊 Tổng số tham gia", value: `${g.entrants.length}`, inline: true },
-        )
-        .setFooter({ text: "Giveaway đã kết thúc" });
+        .setFooter({ text: "\u{13083} Giveaway \u0111\u00E3 k\u1EBFt th\u00FAc." });
 }
 
 function setTimer(g) {
@@ -205,7 +209,8 @@ export async function cmdCreate(interaction) {
             .setLabel("🎉 Tham gia")
             .setStyle(ButtonStyle.Success);
         const row = new ActionRowBuilder().addComponents(button);
-        const msg = await channel.send({ content: "🎉 **GIVEAWAY** 🎉", embeds: [buildEmbed(giveaway)], components: [row] });
+        const TOP = `${em("FLY_blue_6")}   **GIVEAWAY**   ${em("FLY_blue_6")}   ${em("sheep_dinor21")}`;
+const msg = await channel.send({ content: TOP, embeds: [buildEmbed(giveaway)], components: [row] });
 
         giveaway.messageId = msg.id;
         button.setCustomId(`giveaway_enter_${msg.id}`);

@@ -1,6 +1,6 @@
 import "dotenv/config";
-import { Client, GatewayIntentBits, Collection, Events } from "discord.js";
-import { readdirSync } from "fs";
+import { Client, GatewayIntentBits, Collection, Events, ActivityType } from "discord.js";
+import { readdirSync, readFileSync, existsSync } from "fs";
 import { fileURLToPath, pathToFileURL } from "url";
 import { dirname, join } from "path";
 import { initDB } from "./database.js";
@@ -12,6 +12,8 @@ const __dirname = dirname(__filename);
 const client = new Client({
     intents: [
         GatewayIntentBits.Guilds,
+        GatewayIntentBits.GuildMessages,
+        GatewayIntentBits.MessageContent,
     ],
 });
 
@@ -44,15 +46,53 @@ client.on(Events.InteractionCreate, async interaction => {
         await command.execute(interaction);
     } catch (error) {
         console.error(error);
-        await interaction.reply({
-            content: "Có lỗi xảy ra!",
-            ephemeral: true,
-        });
+        if (interaction.replied || interaction.deferred) {
+            await interaction.followUp({ content: "Có lỗi xảy ra!", ephemeral: true });
+        } else {
+            await interaction.reply({ content: "Có lỗi xảy ra!", ephemeral: true });
+        }
+    }
+});
+
+// Auto-reply listener
+const AUTOREPLIES_PATH = join(__dirname, "autoreplies.json");
+
+client.on(Events.MessageCreate, async message => {
+    if (message.author.bot) return;
+    if (!existsSync(AUTOREPLIES_PATH)) return;
+
+    let data;
+    try {
+        data = JSON.parse(readFileSync(AUTOREPLIES_PATH, "utf-8"));
+    } catch {
+        return;
+    }
+
+    const guildReplies = data[message.guildId];
+    if (!guildReplies) return;
+
+    const content = message.content.toLowerCase();
+    for (const rule of guildReplies) {
+        if (content.includes(rule.trigger)) {
+            await message.reply(rule.response);
+            break;
+        }
     }
 });
 
 client.once(Events.ClientReady, readyClient => {
     console.log(`✅ Logged in as ${readyClient.user.tag}`);
+    readyClient.user.setPresence({
+        activities: [{
+            name: "Alternate in Alternative",
+            type: ActivityType.Playing,
+        }],
+        status: "online",
+    });
+});
+
+process.on("unhandledRejection", error => {
+    console.error("Unhandled rejection:", error);
 });
 
 client.login(process.env.DISCORD_TOKEN);
